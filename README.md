@@ -1,0 +1,2 @@
+# offline_version_of_dictated_words
+离线版看音写词
