@@ -1,4 +1,5 @@
 import sys
+import PySide2.QtGui
 import PySide2.QtCore
 import PySide2.QtWidgets
 import dictated_words as text
@@ -54,6 +55,9 @@ main_widget.setLayout(layout)
 
 main_window = PySide2.QtWidgets.QMainWindow()
 main_window.setWindowTitle("生成看音写词")
+main_window.setWindowIcon(
+    PySide2.QtGui.QIcon("icon.svg")
+)
 main_window.setCentralWidget(main_widget)
 
 # main_window.setStyleSheet(
