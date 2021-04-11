@@ -65,7 +65,7 @@ main_window.setWindowIcon(
 )
 
 desktop_widget = PySide2.QtWidgets.QDesktopWidget()
-main_window.resize(
+main_window.setMinimumSize(
     desktop_widget.width() * 0.7,
     desktop_widget.height() * 0.7
 )
