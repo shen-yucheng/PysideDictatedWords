@@ -7,11 +7,28 @@ import dictated_words as text
 
 @PySide2.QtCore.Slot()
 def start():
-    text.Text(
-        words_text=content_entry.toPlainText(),
-        raw_html=open("print.html").read(),
-        title=(title := title_entry.text())
-    ).write_folder(title)
+    try:
+        text.Text(
+            words_text=content_entry.toPlainText(),
+            raw_html=open("print.html").read(),
+            title=(title := title_entry.text())
+        ).write_folder(fr"..\{title}")
+
+        messageBox = PySide2.QtWidgets.QMessageBox()
+        messageBox.information(
+            main_window,
+            "生成看音写词",
+            "完成（关闭程序时才能写入文件夹）",
+        )
+        messageBox.show()
+    except Exception as error:
+        messageBox = PySide2.QtWidgets.QMessageBox()
+        messageBox.critical(
+            main_window,
+            "生成看音写词",
+            str(error),
+        )
+        messageBox.show()
 
 
 PySide2.QtCore.QCoreApplication.setAttribute(PySide2.QtCore.Qt.AA_EnableHighDpiScaling)
