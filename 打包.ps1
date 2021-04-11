@@ -1,0 +1,1 @@
+pipenv run Pyinstaller -w -i C:\Users\shen2\code\offline_version_of_dictated_words\icon.ico main.py
