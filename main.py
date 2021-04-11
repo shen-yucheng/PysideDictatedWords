@@ -18,7 +18,7 @@ def start():
         messageBox.information(
             main_window,
             "生成看音写词",
-            "完成（关闭程序时才能写入文件夹）",
+            "完成",
         )
     except Exception as error:
         messageBox = PySide2.QtWidgets.QMessageBox()
