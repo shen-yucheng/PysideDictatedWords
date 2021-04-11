@@ -37,9 +37,15 @@ app = PySide2.QtWidgets.QApplication(sys.argv)
 # 单个组件
 title_label = PySide2.QtWidgets.QLabel("标题：")
 title_entry = PySide2.QtWidgets.QLineEdit()
+title_entry_layout = PySide2.QtWidgets.QHBoxLayout()
+title_entry_layout.addWidget(title_entry)
+title_entry_layout.addStretch()
+title_entry_frame = PySide2.QtWidgets.QWidget()
+title_entry_frame.setObjectName("title_entry_frame")
+title_entry_frame.setLayout(title_entry_layout)
 title_frame_layout = PySide2.QtWidgets.QVBoxLayout()
 title_frame_layout.addWidget(title_label)
-title_frame_layout.addWidget(title_entry)
+title_frame_layout.addWidget(title_entry_frame)
 title_frame = PySide2.QtWidgets.QWidget()
 title_frame.setLayout(title_frame_layout)
 
@@ -75,11 +81,16 @@ main_window.setWindowTitle("生成看音写词")
 main_window.setWindowIcon(
     PySide2.QtGui.QIcon("icon.svg")
 )
+desktop_widget = PySide2.QtWidgets.QDesktopWidget()
+main_window.resize(
+    desktop_widget.width() * 0.7,
+    desktop_widget.height() * 0.7
+)
 main_window.setCentralWidget(main_widget)
 
-# main_window.setStyleSheet(
-#     open("main.qss").read()
-# )
+main_window.setStyleSheet(
+    open("main.qss").read()
+)
 
 main_window.show()
 app.exec_()
