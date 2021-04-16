@@ -8,11 +8,19 @@ import dictated_words as text
 @PySide2.QtCore.Slot()
 def start():
     try:
+        title = title_entry.text()
         text.Text(
             words_text=content_entry.toPlainText(),
             raw_html=open("print.html").read(),
-            title=(title := title_entry.text())
-        ).write_folder(fr"..\{title}")
+            title=title
+        ).write_zip(
+            PySide2.QtWidgets.QFileDialog.getSaveFileName(
+                main_widget,
+                "保存看音写词",
+                title,
+                r"All Files (*);;Zip Files (*.zip)"
+            )
+        )
 
         messageBox = PySide2.QtWidgets.QMessageBox()
         messageBox.information(
@@ -29,7 +37,6 @@ def start():
         )
 
 
-PySide2.QtCore.QCoreApplication.setAttribute(PySide2.QtCore.Qt.AA_EnableHighDpiScaling)
 app = PySide2.QtWidgets.QApplication(sys.argv)
 
 # 单个组件
