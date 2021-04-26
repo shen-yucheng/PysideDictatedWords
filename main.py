@@ -19,7 +19,7 @@ def start():
                 "保存看音写词",
                 title,
                 r"All Files (*);;Zip Files (*.zip)"
-            )
+            )[0]
         )
 
         messageBox = PySide2.QtWidgets.QMessageBox()

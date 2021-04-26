@@ -70,7 +70,7 @@ class Text:
                 )
 
         return str(
-            self.answer_soup
+            self.answer_soup.prettify()
         )
 
     def get_question_html(self):
@@ -115,15 +115,23 @@ class Text:
         )
 
         zip_file.writestr(
-            "答案.pdf",
+            f"{self.title} 答案.html",
+            self.get_answer_html()
+        )
+        zip_file.writestr(
+            f"{self.title}.html",
+            self.get_question_html()
+        )
+        zip_file.writestr(
+            f"{self.title} 答案.pdf",
             self.get_answer_pdf()
         )
         zip_file.writestr(
-            "试卷.pdf",
+            f"{self.title}.pdf",
             self.get_question_pdf()
         )
         zip_file.writestr(
-            "源词.txt",
+            f"{self.title} 源词.txt",
             self.words_text
         )
 
@@ -140,12 +148,18 @@ class Text:
     def write_folder(self, folder_name: str):
         os.makedirs(folder_name)
 
-        open(fr"{folder_name}/答案.pdf", "wb").write(
+        open(fr"{folder_name}/{self.title} 答案", "wb").write(
+            self.get_answer_html()
+        )
+        open(fr"{folder_name}/{self.title}.html", "wb").write(
+            self.get_question_html()
+        )
+        open(fr"{folder_name}/{self.title} 答案.pdf", "wb").write(
             self.get_answer_pdf()
         )
-        open(fr"{folder_name}/试卷.pdf", "wb").write(
+        open(fr"{folder_name}/{self.title}.pdf", "wb").write(
             self.get_question_pdf()
         )
-        open(fr"{folder_name}/原词.txt", "w").write(
+        open(fr"{folder_name}/{self.title} 原词.txt", "w").write(
             self.words_text
         )
