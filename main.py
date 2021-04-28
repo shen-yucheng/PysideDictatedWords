@@ -11,7 +11,6 @@ def start():
         title = title_entry.text()
         text.Text(
             words_text=content_entry.toPlainText(),
-            raw_html=open("print.html").read(),
             title=title
         ).write_zip(
             PySide2.QtWidgets.QFileDialog.getSaveFileName(

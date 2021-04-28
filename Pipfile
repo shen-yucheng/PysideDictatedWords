@@ -5,12 +5,7 @@ name = "pypi"
 
 [packages]
 pyside2 = "*"
-beautifulsoup4 = "*"
-pdfkit = "*"
 pypinyin = "*"
-lxml = "*"
-pyinstaller = "*"
-setuptools = "==56.0.0"
 
 [dev-packages]
 
