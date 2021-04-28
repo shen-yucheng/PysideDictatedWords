@@ -5,6 +5,7 @@ import pdfkit
 import zipfile
 import io
 import os
+import random
 
 
 def new_tag(html: str):
@@ -29,21 +30,26 @@ class Text:
             )
 
         self.title = title
+        self.raw_text = words_text
         self.raw_html = raw_html
 
         # 去除换行符
-        self.words_text = re.sub(
+        words_text = re.sub(
             r"\\.",
             " ",
             repr(words_text)[1:-1]
         )
+
         # 去除多余空格
-        self.words_text = re.sub(
+        words_text = re.sub(
             r"\s+",
             " ",
             words_text
         )
-        self.pinyin_dict = {each_word: pinyin(each_word) for each_word in self.words_text.split(" ")}
+
+        words = words_text.split(" ")
+        random.shuffle(words)
+        self.pinyin_dict = {each_word: pinyin(each_word) for each_word in words}
 
         self.pdfkit_config = pdfkit.configuration(
             wkhtmltopdf=pdfkit_config
@@ -65,12 +71,12 @@ class Text:
             for each_pinyin in self.pinyin_dict:
                 self.answer_soup.body.append(
                     new_tag(
-                        rf'<div class="question"><p class="pinyin">{self.pinyin_dict[each_pinyin]}</p><p class="kuohao">（</p><pre class="kuohao answer">{each_pinyin :^{len(each_pinyin) * 2}}</pre><p class="kuohao">）</p></div>'
+                        rf'<div class="question"><p class="pinyin">{self.pinyin_dict[each_pinyin]}</p><p class="kuohao">（</p><pre class="kuohao answer">{each_pinyin :^{round(len(each_pinyin) * 2.5)}}</pre><p class="kuohao">）</p></div>'
                     )
                 )
 
         return str(
-            self.answer_soup.prettify()
+            self.answer_soup
         )
 
     def get_question_html(self):
@@ -88,7 +94,7 @@ class Text:
             )
 
         return str(
-            self.question_soup.prettify()
+            self.question_soup
         )
 
     def get_answer_pdf(self):
@@ -132,7 +138,7 @@ class Text:
         )
         zip_file.writestr(
             f"{self.title} 源词.txt",
-            self.words_text
+            self.raw_text
         )
 
         zip_file.close()
@@ -161,5 +167,5 @@ class Text:
             self.get_question_pdf()
         )
         open(fr"{folder_name}/{self.title} 原词.txt", "w").write(
-            self.words_text
+            self.raw_text
         )
