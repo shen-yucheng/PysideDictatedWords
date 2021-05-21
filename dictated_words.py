@@ -6,6 +6,24 @@ import os
 import random
 
 
+def get_words(text: str) -> list:
+    # 去除换行符
+    words_text = re.sub(
+        r"\\.",
+        " ",
+        repr(text)[1:-1]
+    )
+
+    # 去除多余空格
+    words_text = re.sub(
+        r"\s+",
+        " ",
+        words_text
+    )
+
+    return words_text.split(" ")
+
+
 class Text:
     text_html = None
     answer_html = None
@@ -23,21 +41,6 @@ class Text:
         self.title = title
         self.raw_text = words_text
 
-        # 去除换行符
-        words_text = re.sub(
-            r"\\.",
-            " ",
-            repr(words_text)[1:-1]
-        )
-
-        # 去除多余空格
-        words_text = re.sub(
-            r"\s+",
-            " ",
-            words_text
-        )
-
-        words = words_text.split(" ")
         random.shuffle(words)
 
         self.words_html = "".join([

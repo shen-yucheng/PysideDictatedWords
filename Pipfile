@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 pyside2 = "*"
 pypinyin = "*"
+xpinyin = "*"
+pinyin = "*"
 
 [dev-packages]
 

@@ -1,15 +1,16 @@
-QLineEdit, QTextEdit {
-    margin: 10px;
-    padding: 10px;
+*{
+    font-family: "Microsoft YaHei";
+}
+
+#main_entry{
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #d7d7d7;
+    font-size: 20px;
+    margin: 0px;
     background-color: white;
 }
 
-#start_button {
-    padding: 10px 30px;
-    margin: 10px;
-}
-
-QLineEdit, QTextEdit, #start_button {
-    font-size: 15px;
-    font-family: Microsoft YaHei;
+#count_label,#zoom_label{
+    font-size: 16px;
+    margin: 4px;
 }
