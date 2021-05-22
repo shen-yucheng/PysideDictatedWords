@@ -10,7 +10,6 @@
     background-color: white;
 }
 
-#count_label,#zoom_label{
-    font-size: 16px;
-    margin: 4px;
+#count_label{
+    margin: 2px;
 }

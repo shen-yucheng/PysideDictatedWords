@@ -6,7 +6,7 @@ import os
 import random
 
 
-def get_words(text: str) -> list:
+def format_words_text(text: str) -> str:
     # 去除换行符
     words_text = re.sub(
         r"\\.",
@@ -21,7 +21,7 @@ def get_words(text: str) -> list:
         words_text
     )
 
-    return words_text.split(" ")
+    return words_text
 
 
 class Text:
@@ -33,19 +33,22 @@ class Text:
         words_split_by_enter_or_space
         """
 
-        def pinyin(word):
-            return " ".join(
-                (each_pinyin[0] for each_pinyin in pypinyin.pinyin(word))
-            )
-
         self.title = title
         self.raw_text = words_text
 
+        words: list = format_words_text(words_text).split(" ")
         random.shuffle(words)
 
-        self.words_html = "".join([
-            rf'<div class="question"><p class="pinyin">{pinyin(each_word)}</p><p class="kuohao">（</p><pre class="kuohao answer">{each_word :^{round(len(each_word) * 2.5)}}</pre><p class="kuohao">）</p></div>'
-            for each_word in words])
+        words_html: list = []
+        for each_word in words:
+            pinyin = " ".join(
+                pypinyin.lazy_pinyin(each_word, style=pypinyin.Style.TONE)
+            )
+            answer = f"each_word :^{round(len(each_word) * 2.5)}"
+            html = rf'<div class="question"><p class="pinyin">{pinyin}</p><p class="kuohao">（</p><pre class="kuohao answer">{answer}</pre><p class="kuohao">）</p></div>'
+
+            words_html.append(html)
+        self.words_html = "".join(words_html)
 
     def get_text_html(self):
         if not self.text_html:
