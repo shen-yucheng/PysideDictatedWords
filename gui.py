@@ -1,8 +1,10 @@
+import sys
 import PySide2.QtGui
 import PySide2.QtCore
 import PySide2.QtWidgets
 import sys
 import dictated_words
+import zipfile
 
 app = PySide2.QtWidgets.QApplication(sys.argv)
 
@@ -27,7 +29,7 @@ class Editor(PySide2.QtWidgets.QMainWindow):
         self.statusBar().addWidget(self.count_label)
 
         # 窗口设置
-        self.setWindowTitle("生成看音写词")
+        self.setWindowTitle(self.title)
         self.setWindowIcon(PySide2.QtGui.QIcon("icon.svg"))
         desktop_widget = PySide2.QtWidgets.QDesktopWidget()
         self.resize(desktop_widget.width() * 0.7, desktop_widget.height() * 0.7)
@@ -37,13 +39,19 @@ class Editor(PySide2.QtWidgets.QMainWindow):
         # 菜单设置
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("文件")
+        file_menu.addAction("重命名").triggered.connect(self.rename)
         file_menu.addAction("保存").triggered.connect(self.save)
+        file_menu.addAction("另存为").triggered.connect(self.save_as)
 
-        self.menuBar().addMenu("编辑")
+        menu_bar.addMenu("编辑")
 
-        self.menuBar().addMenu("帮助")
+        menu_bar.addMenu("帮助")
 
         self.count()
+
+        # 打开文件
+        if len(sys.argv) > 1:
+            self.load_file(sys.argv[1])
 
     @PySide2.QtCore.Slot()
     def count(self) -> tuple:
@@ -72,19 +80,12 @@ class Editor(PySide2.QtWidgets.QMainWindow):
 
         return character_length, words_length, lines_length
 
-    @PySide2.QtCore.Slot()
-    def save(self):
+    def write(self, file_name):
+        # 看音写词
         dictated_words.Text(
             words_text=self.content_entry.toPlainText(),
             title=self.title
-        ).write_zip(
-            PySide2.QtWidgets.QFileDialog.getSaveFileName(
-                self,
-                "保存看音写词",
-                self.title,
-                r"All Files (*);;Zip Files (*.zip)"
-            )[0]
-        )
+        ).write_zip(file_name)
 
         # 完成提示
         messageBox = PySide2.QtWidgets.QMessageBox()
@@ -92,6 +93,50 @@ class Editor(PySide2.QtWidgets.QMainWindow):
             main_window,
             "生成看音写词",
             "完成",
+        )
+
+    @PySide2.QtCore.Slot()
+    def rename(self):
+        _input = PySide2.QtWidgets.QInputDialog.getText(self, "重命名看音写词", "请输入新名称")
+        if _input[1]:
+            self.title = _input[0]
+
+        self.setWindowTitle(self.title)
+
+    @PySide2.QtCore.Slot()
+    def save(self):
+        if not self.file_path:
+            self.file_path = PySide2.QtWidgets.QFileDialog.getSaveFileName(
+                self,
+                "保存看音写词",
+                self.title,
+                r"All Files (*);;Zip Files (*.zip)"
+            )[0]
+
+        self.write(file_name=self.file_path)
+
+    @PySide2.QtCore.Slot()
+    def save_as(self):
+        file_path = PySide2.QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            "另存看音写词",
+            self.title,
+            r"All Files (*);;Zip Files (*.zip)"
+        )[0]
+
+        self.write(file_path)
+
+    def load_file(self, file_path):
+        zip_ = zipfile.ZipFile(file_path, 'r')
+        for each_name in zip_.namelist():
+            if "原词" in each_name:
+                break
+
+        self.file_path = file_path
+        self.title = each_name
+        self.setWindowTitle(each_name)
+        self.content_entry.setPlainText(
+            zip_.read(each_name).decode('utf-8')
         )
 
 
