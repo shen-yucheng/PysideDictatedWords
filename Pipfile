@@ -4,10 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyside2 = "*"
 pypinyin = "*"
-xpinyin = "*"
-pinyin = "*"
+pyside2 = "*"
 
 [dev-packages]
 

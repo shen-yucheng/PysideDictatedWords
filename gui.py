@@ -31,7 +31,7 @@ class Editor(PySide2.QtWidgets.QMainWindow):
         # 窗口设置
         self.setWindowTitle(self.title)
         self.setWindowIcon(PySide2.QtGui.QIcon("icon.svg"))
-        desktop_widget = PySide2.QtWidgets.QDesktopWidget()
+        desktop_widget = app.primaryScreen().availableGeometry()
         self.resize(desktop_widget.width() * 0.7, desktop_widget.height() * 0.7)
         self.setStyleSheet(open("main.qss").read())
         self.setCentralWidget(self.content_entry)
