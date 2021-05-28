@@ -5,6 +5,7 @@ import PySide2.QtWidgets
 import sys
 import dictated_words
 import zipfile
+import win32api
 
 app = PySide2.QtWidgets.QApplication(sys.argv)
 

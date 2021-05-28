@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pypinyin = "*"
 pyside2 = "*"
+pywin32 = "*"
 
 [dev-packages]
 
