@@ -1,2 +1,2 @@
-# offline_version_of_dictated_words
-离线版看音写词
+# PysideDictatedWords
+Pyside版本生成看音写词程序
